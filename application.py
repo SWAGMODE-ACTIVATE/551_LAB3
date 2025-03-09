@@ -26,18 +26,5 @@ print('flask is starting')
 def index():
     return render_template("index.html")
 
-@app.route("/search", methods=["POST", "GET"])
-def search():
-    if request.method == "POST":
-        search = request.form.get("query")
-        search = f"%{search}%"
-        result_exists = db.execute(text("SELECT * FROM books WHERE isbn LIKE :search OR title LIKE :search OR author LIKE :search OR CAST(year AS TEXT) LIKE :search"), {"search": search}).fetchall()
-        if result_exists:
-            return render_template("search.html", username=session["username"], results="results found", books=result_exists)
-        else:
-            return render_template("search.html", username=session["username"], results="no results found.")
-    if request.method == "GET":
-        return render_template("search.html", username=session["username"])
-
 if __name__ == "__main__":
     app.run(debug=True)
