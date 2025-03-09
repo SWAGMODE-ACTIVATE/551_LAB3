@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+    <head>
+        <title>Calgary Buildings Map</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	    <link rel="stylesheet" href="/static/styles/pagestyle.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    </head>
+	
+    <body>
+        <h1>permit search</h1>
+        <div id="map" style="width: 1200px; height: 580px; margin: 0 auto"></div>
+        <h3>search results</h3>
+        <form id="back" action = "{{ url_for('index') }}" method="GET">
+            <button>back</button>
+        </form>
+    </body>
+
+    <script>
+    var map = L.map('map', {
+        center: [51,-114],
+        zoom:10
+    });
+    
+    var tile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
+
+    tile.addTo(map);
+
+    "{% for point in listofpts %}"
+        var feature ={
+            "type": "Feature",
+            "properties": {
+                "adress": "{{point.originaladress}}",
+                "community": "{{point.communityname}}",
+                "issuedate": "{{point.issuedate}}",
+                "workclassgroup": "{{point.workclassgroup}}",
+                "contractor": "{{point.contractorname}}",
+                "marker-size": "small"
+            },
+            "geometry":{
+                "type": "Point",
+                "coordinates": ["{{point.long}}","{{point.lat}}"]
+            }
+        };
+        L.geoJSON(feature).bindPopup(function(layer){
+            return layer.feature.properties.adress
+        }).addTo(map)
+    "{% endfor %}"
+
+    </script> 
+</html>
