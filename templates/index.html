@@ -11,6 +11,7 @@
     <body>
         <h1>permit search</h1>
         <div id="map" style="width: 1200px; height: 580px; margin: 0 auto"></div>
+        <p class="warning">{{ message }}</p>
         <h3>search for building permits between two given dates!</h3>
         <form id="searcher" action = "{{ url_for('index') }}" method="POST">
             <div style="display: flex; justify-content: center; gap: 6px; align-items: center; margin-bottom: 10px;">
