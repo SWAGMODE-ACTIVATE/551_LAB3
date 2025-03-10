@@ -35,5 +35,16 @@
 
     tile.addTo(map)
 
+    var tile2 = L.tileLayer(
+            'https://api.mapbox.com/styles/v1/blackgoatlaughs/cm83dqgdz000401so9cldhct2/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYmxhY2tnb2F0bGF1Z2hzIiwiYSI6ImNtODNkYnYxaTBtcmEybHB3MnJ2bGQwNHkifQ.OYZqlOXTklXs9dHyt1WDjA',
+            {
+              maxZoom: 19,
+              attribution:
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://www.mapbox.com/about/maps/">Mapbox</a> <strong><a href="https://labs.mapbox.com/contribute/" target="_blank">Improve this map</a></strong>'
+            }
+          )
+
+    tile2.addTo(map)
+
     </script> 
 </html>
