@@ -6,14 +6,25 @@
 	    <link rel="stylesheet" href="/static/styles/pagestyle.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="/static\Leaflet.markercluster-1.4.1\dist\MarkerCluster.css">
+        <link rel="stylesheet" href="/static\Leaflet.markercluster-1.4.1\dist\MarkerCluster.Default.css">
+
+        <script src="/static\Leaflet.markercluster-1.4.1\dist\leaflet.markercluster-src.js"></script>
+        <script src="/static\Leaflet.markercluster-1.4.1\src\MarkerCluster.js"></script>
     </head>
 	
     <body>
         <h1>permit search</h1>
         <div id="map" style="width: 1200px; height: 580px; margin: 0 auto"></div>
-        <h3>search results</h3>
-        <form id="back" action = "{{ url_for('index') }}" method="GET">
-            <button>back</button>
+        <p class="warning">{{ message }}</p>
+        <h3>search for building permits between two given dates!</h3>
+        <form id="searcher" action = "{{ url_for('index') }}" method="POST">
+            <div style="display: flex; justify-content: center; gap: 6px; align-items: center; margin-bottom: 10px;">
+                <input name="from_date" type="date" id="start">
+                <span style="margin: 0 5px; padding: 0;">until: </span>
+                <input name="till_date" type="date" id="till">
+            </div>
+            <button>search</button>
         </form>
     </body>
 
@@ -29,8 +40,10 @@
 
     tile.addTo(map);
 
+    var markers = L.markerClusterGroup();
+
     "{% for point in listofpts %}"
-        var feature ={
+        /*var feature ={ //commented this whole part out, doesnt work with cluster library :(
             "type": "Feature",
             "properties": {
                 "adress": "{{point.originaladress}}",
@@ -54,11 +67,20 @@
                     <b>Issued Date:</b> ${props.issuedate}<br>
                     <b>Work Class:</b> ${props.workclassgroup}<br>
                     <b>Contractor:</b> ${props.contractor}
-                `;
+                `; //templated string that contains everything that the popup will show
                 layer.bindPopup(popupContent);
             }
-        }).addTo(map);
+        });
+        */
+        var marker=L.marker(["{{point.lat}}", "{{point.long}}"]).bindPopup(`
+            <b>Address:</b> {{point.originaladress}}<br>
+            <b>Community:</b> {{point.communityname}}<br>
+            <b>Issued Date:</b> {{point.issuedate}}<br>
+            <b>Work Class:</b> {{point.workclassgroup}}<br>
+            <b>Contractor:</b> {{point.contractorname}}
+        `)
+        markers.addLayer(marker);
     "{% endfor %}"
-
+    map.addLayer(markers)
     </script> 
 </html>
