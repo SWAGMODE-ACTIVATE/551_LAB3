@@ -71,6 +71,7 @@ def index():
                 # Extract other relevant properties
                 address = prop["originaladdress"]
                 issued = prop["issueddate"]
+                issued = issued[0:10]
                 contractor = prop["contractorname"]
                 community = prop["communityname"]
                 workclass = prop["workclassgroup"]

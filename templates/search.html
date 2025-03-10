@@ -45,9 +45,19 @@
                 "coordinates": ["{{point.long}}","{{point.lat}}"]
             }
         };
-        L.geoJSON(feature).bindPopup(function(layer){
-            return layer.feature.properties.adress
-        }).addTo(map)
+        L.geoJSON(feature, {
+            onEachFeature: function (feature, layer) {
+                var props = feature.properties;
+                var popupContent = `
+                    <b>Address:</b> ${props.adress}<br>
+                    <b>Community:</b> ${props.community}<br>
+                    <b>Issued Date:</b> ${props.issuedate}<br>
+                    <b>Work Class:</b> ${props.workclassgroup}<br>
+                    <b>Contractor:</b> ${props.contractor}
+                `;
+                layer.bindPopup(popupContent);
+            }
+        }).addTo(map);
     "{% endfor %}"
 
     </script> 
