@@ -1,27 +1,21 @@
-# 551_LAB2
-the book search website works using three databases - reviews, users, and books, all being created and filled using the flask applicatoin as wel las import.py. It contains a login/logout page, a serach page, and a template page for every book.
-additionaly, in lab 2, there is added implementation for google books api and google gemini ai api, the review system is slightly tweaked, and an api method is added to the application.
-users can now only review once per book per account, and the /api/isbn route will return a json dictionary of all relevant info when a get query is sent using a valid isbn.
-the rest of the application remains mostly unchanged from lab1, save the review talbe now having an extra column for star rating.
+# 551_LAB3
+
+the permit searching website works by allowing users to query the city of Calgarys public data API to see building permits around the city that were issued between certain ranges of dates that are inputted by the user. the application first brings users to a main page showing an empty map, where they are promted to enter in a date range to query. after the application makes sure the dates are valid, it searches the API and displayed all of the matching data points on the map for the user to view. Points are clustered for readibility using the github library leaflet.markercluster and can be clicked on to see a popup with all the relevant information about that point.
 
 Files-
 /static/pagestyle.css - this is the css stylesheet for all of the template pages
 
-/templates/bookpage.html - this is the tmeplate page that shows for every book. it contains title, author, date, etc data, the form for submitting a review, and the reviews for the book all passed in via flask
+/static/Leaflet.markercluster-1.4.1 - this is the github library i used to create the clusted map icons (https://github.com/Leaflet/Leaflet.markercluster)
 
-/templates/index.html - this is the inoitial page you see. it is a simple login/logout and register form. the two forms create users in the user database and allow entry to the search functoin if the user enters in a valid username and password
+/templates/index.html - this is the initial page you see. it just a simple empty map of calgary with the date -range search input at the bottom of the page. if you enter in a daterange thats invalid, you are redirected here along with an error message.
 
-/templates/search.html - the search bar that queries the books database for anything containing (LIKE) the query. The results are listed using flask below the bar.
+/templates/search.html - looks and functions pretty much identical to index.html but this is the map that is filled in with all of the matching building permits.
 
 the templates for the search page as well as the book page have logout and return buttons at the top of the page.
 
 .gitattributes - idk what this is but it looks important
 
-application.py - this is the main flask applicatoin that makes the whole thing work. it has 6 functions that handle searches, logins, user registries/logins, reviews and others. handles sessions and user login too.
-
-import.py - creates all of the three databases and imports the contents of books.csv into the books database, also allows for resseting of those databases if needed.
-
-books.csv - initial contents of books database to be imported.
+application.py - this is the main flask applicatoin that makes the whole thing work. it has 2 functions, one for the main page and one for the searching function. this is where the maps are created and filled, and where the API is queried for informatoin.
 
 readme.md- this file
 
